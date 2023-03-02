@@ -12,7 +12,7 @@
 
 #include <strsafe.h>
 
-const SYSTEMTIME MOONG::FileInformation::GetFileCreationTime(const HANDLE handle/* = NULL*/)
+const SYSTEMTIME MOONG::FileInformation::GetCreationTime(const HANDLE handle/* = NULL*/)
 {
 	SYSTEMTIME local_time = { 0 };
 
@@ -20,7 +20,7 @@ const SYSTEMTIME MOONG::FileInformation::GetFileCreationTime(const HANDLE handle
 
 	if (handle == NULL)
 	{
-		process_handle = CreateFileA(MOONG::FileInformation::GetFileName().c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		process_handle = MOONG::FileInformation::GetHandle(MOONG::FileInformation::GetName());
 		if (process_handle == INVALID_HANDLE_VALUE)
 		{
 			return local_time;
@@ -44,7 +44,7 @@ const SYSTEMTIME MOONG::FileInformation::GetFileCreationTime(const HANDLE handle
 	return local_time;
 }
 
-const std::string MOONG::FileInformation::GetFilePath(const HANDLE handle/* = NULL*/)
+const std::string MOONG::FileInformation::GetPath(const HANDLE handle/* = NULL*/)
 {
 	DWORD process_id = GetCurrentProcessId();
 	HANDLE process_handle = NULL;
@@ -82,7 +82,7 @@ const std::string MOONG::FileInformation::GetFilePath(const HANDLE handle/* = NU
 	return file_path;
 }
 
-const std::string MOONG::FileInformation::GetFileName(const HANDLE handle/* = NULL*/)
+const std::string MOONG::FileInformation::GetName(const HANDLE handle/* = NULL*/)
 {
 #if _MSC_VER > 1200
 	char drive[_MAX_DRIVE] = { 0 };
@@ -90,28 +90,28 @@ const std::string MOONG::FileInformation::GetFileName(const HANDLE handle/* = NU
 	char file_name[_MAX_FNAME] = { 0 };
 	char file_extension[_MAX_EXT] = { 0 };
 
-	_splitpath_s(MOONG::FileInformation::GetFilePath(handle).c_str(), drive, sizeof(drive), dir, sizeof(dir), file_name, sizeof(file_name), file_extension, sizeof(file_extension));
+	_splitpath_s(MOONG::FileInformation::GetPath(handle).c_str(), drive, sizeof(drive), dir, sizeof(dir), file_name, sizeof(file_name), file_extension, sizeof(file_extension));
 
 	return std::string(file_name) + std::string(file_extension);
 #else
 	char file_name[MAX_PATH] = {0};
 	
-	GetFileTitleA(MOONG::FileInfo::GetFilePath(handle).c_str(), file_name, sizeof(file_name));
+	GetFileTitleA(MOONG::FileInformation::GetFilePath(handle).c_str(), file_name, sizeof(file_name));
 
 	return file_name;
 #endif
 }
 
-const std::string MOONG::FileInformation::GetFileNameWithoutFileExtension(const HANDLE handle/* = NULL*/)
+const std::string MOONG::FileInformation::GetNameWithoutFileExtension(const HANDLE handle/* = NULL*/)
 {
-	std::string file_name = MOONG::FileInformation::GetFileName();
+	std::string file_name = MOONG::FileInformation::GetName(handle);
 
 	return file_name.substr(0, file_name.find('.'));
 }
 
 const std::string MOONG::FileInformation::GetFolderName(const HANDLE handle/* = NULL*/)
 {
-	std::string folder_name = MOONG::FileInformation::GetFilePath();
+	std::string folder_name = MOONG::FileInformation::GetPath(handle);
 
 	folder_name = folder_name.substr(0, folder_name.find_last_of('\\'));
 
@@ -120,12 +120,12 @@ const std::string MOONG::FileInformation::GetFolderName(const HANDLE handle/* = 
 	return std::string(folder_name);
 }
 
-const std::string MOONG::FileInformation::GetFileVersion(const std::string param_file_path/* = ""*/)
+const std::string MOONG::FileInformation::GetVersion(const std::string param_file_path/* = ""*/)
 {
 	std::string file_path;
 	if (param_file_path.empty() == true)
 	{
-		file_path = MOONG::FileInformation::GetFilePath();
+		file_path = MOONG::FileInformation::GetPath();
 	}
 	else
 	{
@@ -165,4 +165,14 @@ const std::string MOONG::FileInformation::GetFileVersion(const std::string param
 	}
 
 	return file_version;
+}
+
+const HANDLE MOONG::FileInformation::GetHandle(const std::string file_name)
+{
+	return CreateFileA(file_name.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+}
+
+const long MOONG::FileInformation::GetSize(const std::string file_path)
+{
+	return 0;
 }
