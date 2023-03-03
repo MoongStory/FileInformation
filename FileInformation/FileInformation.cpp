@@ -14,11 +14,11 @@
 
 #include <strsafe.h>
 
-const SYSTEMTIME MOONG::FileInformation::GetCreationTime(const std::string& file_path/* = ""*/)
+const SYSTEMTIME MOONG::FileInformation::get_creation_time(const std::string& file_path/* = ""*/)
 {
 	SYSTEMTIME local_time = { 0 };
 
-	HANDLE process_handle = MOONG::FileInformation::GetFileHandle(file_path);
+	HANDLE process_handle = MOONG::FileInformation::get_file_handle(file_path);
 	if(process_handle == INVALID_HANDLE_VALUE)
 	{
 		return local_time;
@@ -37,7 +37,7 @@ const SYSTEMTIME MOONG::FileInformation::GetCreationTime(const std::string& file
 	return local_time;
 }
 
-const std::string MOONG::FileInformation::GetPath(const HANDLE param_file_handle/* = NULL*/)
+const std::string MOONG::FileInformation::get_path(const HANDLE param_file_handle/* = NULL*/)
 {
 	char output[MAX_PATH + 1] = { 0 };
 
@@ -135,21 +135,21 @@ const std::string MOONG::FileInformation::GetPath(const HANDLE param_file_handle
 	return output;
 }
 
-const std::string MOONG::FileInformation::GetName(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_name(std::string file_path/* = ""*/)
 {
-	return MOONG::StringTool::pop_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::GetPath() : file_path, "\\/");
+	return MOONG::StringTool::pop_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path, "\\/");
 }
 
-const std::string MOONG::FileInformation::GetNameWithoutFileExtension(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_name_without_file_extension(std::string file_path/* = ""*/)
 {
-	std::string file_name = MOONG::FileInformation::GetName(file_path);
+	std::string file_name = MOONG::FileInformation::get_name(file_path);
 
 	return MOONG::StringTool::cut_right(file_name, ".");
 }
 
-const std::string MOONG::FileInformation::GetFolderName(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_folder_name(std::string file_path/* = ""*/)
 {
-	std::string folder_name = file_path.length() <= 0 ? MOONG::FileInformation::GetPath() : file_path;
+	std::string folder_name = file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path;
 
 	folder_name = folder_name.substr(0, MOONG::StringTool::find_index_rightmost(folder_name, "\\/"));
 
@@ -158,12 +158,12 @@ const std::string MOONG::FileInformation::GetFolderName(std::string file_path/* 
 	return std::string(folder_name);
 }
 
-const std::string MOONG::FileInformation::GetVersion(const std::string param_file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_version(const std::string param_file_path/* = ""*/)
 {
 	std::string file_path;
 	if (param_file_path.empty() == true)
 	{
-		file_path = MOONG::FileInformation::GetPath();
+		file_path = MOONG::FileInformation::get_path();
 	}
 	else
 	{
@@ -205,21 +205,21 @@ const std::string MOONG::FileInformation::GetVersion(const std::string param_fil
 	return file_version;
 }
 
-const HANDLE MOONG::FileInformation::GetFileHandle(const std::string& file_path/* = ""*/)
+const HANDLE MOONG::FileInformation::get_file_handle(const std::string& file_path/* = ""*/)
 {
 	if(file_path.length() <= 0)
 	{
-		return CreateFileA(MOONG::FileInformation::GetPath().c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		return CreateFileA(MOONG::FileInformation::get_path().c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	}
 
 	return CreateFileA(file_path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 }
 
-const LONGLONG MOONG::FileInformation::GetSize(const std::string file_path/* = ""*/)
+const LONGLONG MOONG::FileInformation::get_size(const std::string file_path/* = ""*/)
 {
 	LARGE_INTEGER file_size = {0};
 
-	GetFileSizeEx(MOONG::FileInformation::GetFileHandle(file_path), &file_size);
+	GetFileSizeEx(MOONG::FileInformation::get_file_handle(file_path), &file_size);
 
 	return file_size.QuadPart;
 }

@@ -44,20 +44,20 @@ namespace MOONG
 
 	public:
 		// HANDLE 또는 path를 NULL 또는 빈 문자열로 넘기면 자기 자신을 대상으로 함.
-		static const std::string GetPath(const HANDLE param_file_handle = NULL);
+		static const std::string get_path(const HANDLE param_file_handle = NULL);
 
-		static const HANDLE GetFileHandle(const std::string& file_path = "");
+		static const HANDLE get_file_handle(const std::string& file_path = "");
 
-		static const SYSTEMTIME GetCreationTime(const std::string& file_path = "");
+		static const SYSTEMTIME get_creation_time(const std::string& file_path = "");
 
-		static const std::string GetName(std::string file_path = "");
-		static const std::string GetNameWithoutFileExtension(std::string file_path = "");
+		static const std::string get_name(std::string file_path = "");
+		static const std::string get_name_without_file_extension(std::string file_path = "");
 
-		static const std::string GetFolderName(std::string file_path = "");
+		static const std::string get_folder_name(std::string file_path = "");
 
-		static const std::string GetVersion(const std::string param_file_path = "");
+		static const std::string get_version(const std::string param_file_path = "");
 
-		static const LONGLONG GetSize(const std::string file_path = "");
+		static const LONGLONG get_size(const std::string file_path = "");
 	protected:
 	private:
 	};
