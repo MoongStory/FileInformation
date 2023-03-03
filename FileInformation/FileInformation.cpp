@@ -37,23 +37,107 @@ const SYSTEMTIME MOONG::FileInformation::GetCreationTime(const std::string& file
 	return local_time;
 }
 
-const std::string MOONG::FileInformation::GetSelfPath()
+const std::string MOONG::FileInformation::GetPath(const HANDLE param_file_handle/* = NULL*/)
 {
-	DWORD process_id = GetCurrentProcessId();
-	HANDLE process_handle = NULL;
+	char output[MAX_PATH + 1] = { 0 };
 
-	process_handle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, process_id);
+	HANDLE file_handle = NULL;
 
-	char file_path[MAX_PATH] = {0};
-	GetModuleFileNameExA(process_handle, NULL, file_path, sizeof(file_path));
-	//GetModuleFileNameA(NULL, file_path, sizeof(file_path));
+	if (NULL == param_file_handle)
+	{
+		char self_path[MAX_PATH] = { 0 };
+		GetModuleFileNameA(NULL, self_path, sizeof(self_path));
+		file_handle = CreateFileA(self_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	}
+	else
+	{
+		file_handle = param_file_handle;
+	}
 
-	return file_path;
+	HANDLE hFileMap = NULL;
+
+	// Get the file size.
+	DWORD dwFileSizeHi = 0;
+	DWORD dwFileSizeLo = GetFileSize(file_handle, &dwFileSizeHi);
+
+	if (dwFileSizeLo == 0 && dwFileSizeHi == 0)
+	{
+		return "Cannot map a file with a length of zero.";
+	}
+
+	// Create a file mapping object.
+	hFileMap = CreateFileMapping(file_handle,
+		NULL,
+		PAGE_READONLY,
+		0,
+		1,
+		NULL);
+
+	if (hFileMap)
+	{
+		// Create a file mapping to get the file name.
+		void* pMem = MapViewOfFile(hFileMap, FILE_MAP_READ, 0, 0, 1);
+
+		if (pMem)
+		{
+			if (GetMappedFileNameA(GetCurrentProcess(),
+				pMem,
+				output,
+				MAX_PATH))
+			{
+				// Translate path with device name to drive letters.
+				char szTemp[512] = { 0 };
+
+				if (GetLogicalDriveStringsA(_countof(szTemp) - 1, szTemp))
+				{
+					char szName[MAX_PATH] = { 0 };
+					char szDrive[3] = " :";
+					bool bFound = FALSE;
+					char* p = szTemp;
+
+					do
+					{
+						// Copy the drive letter to the template string
+						*szDrive = *p;
+
+						// Look up each device name
+						if (QueryDosDeviceA(szDrive, szName, MAX_PATH))
+						{
+							size_t uNameLen = strlen(szName);
+
+							if (uNameLen < MAX_PATH)
+							{
+								bFound = _strnicmp(output, szName, uNameLen) == 0 && *(output + uNameLen) == '\\';
+
+								if (bFound)
+								{
+									StringCchPrintfA(output,
+										_countof(output),
+										"%s%s",
+										szDrive,
+										output + uNameLen);
+								}
+							}
+						}
+
+						// Go to the next NULL character.
+						while (*p++);
+					} while (!bFound && *p); // end of string
+				}
+			}
+			
+			UnmapViewOfFile(pMem);
+		}
+
+		CloseHandle(hFileMap);
+	}
+
+	return output;
 }
 
 const std::string MOONG::FileInformation::GetName(std::string file_path/* = ""*/)
 {
-	return MOONG::StringTool::pop_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::GetSelfPath() : file_path, "\\/");
+	return MOONG::StringTool::pop_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::GetPath() : file_path, "\\/");
 }
 
 const std::string MOONG::FileInformation::GetNameWithoutFileExtension(std::string file_path/* = ""*/)
@@ -65,7 +149,7 @@ const std::string MOONG::FileInformation::GetNameWithoutFileExtension(std::strin
 
 const std::string MOONG::FileInformation::GetFolderName(std::string file_path/* = ""*/)
 {
-	std::string folder_name = file_path.length() <= 0 ? MOONG::FileInformation::GetSelfPath() : file_path;
+	std::string folder_name = file_path.length() <= 0 ? MOONG::FileInformation::GetPath() : file_path;
 
 	folder_name = folder_name.substr(0, MOONG::StringTool::find_index_rightmost(folder_name, "\\/"));
 
@@ -79,7 +163,7 @@ const std::string MOONG::FileInformation::GetVersion(const std::string param_fil
 	std::string file_path;
 	if (param_file_path.empty() == true)
 	{
-		file_path = MOONG::FileInformation::GetSelfPath();
+		file_path = MOONG::FileInformation::GetPath();
 	}
 	else
 	{
@@ -125,7 +209,7 @@ const HANDLE MOONG::FileInformation::GetFileHandle(const std::string& file_path/
 {
 	if(file_path.length() <= 0)
 	{
-		return CreateFileA(MOONG::FileInformation::GetSelfPath().c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		return CreateFileA(MOONG::FileInformation::GetPath().c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	}
 
 	return CreateFileA(file_path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);

@@ -2,7 +2,8 @@
 
 int main()
 {
-	std::cout << "GetPath[" << MOONG::FileInformation::GetSelfPath().c_str() << "]\n" << std::endl;
+	std::cout << "GetPath[" << MOONG::FileInformation::GetPath().c_str() << "]\n" << std::endl;
+	std::cout << "GetPath[" << MOONG::FileInformation::GetPath(MOONG::FileInformation::GetFileHandle("C:/Program Files/Google/Chrome/Application/chrome.exe")).c_str() << "]\n" << std::endl;
 	
 	std::cout << std::endl;
 	std::cout << std::endl;

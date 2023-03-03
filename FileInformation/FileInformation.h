@@ -43,8 +43,8 @@ namespace MOONG
 	private:
 
 	public:
-		// path를 NULL 또는 빈 문자열로 넘기면 자기 자신을 대상으로 함.
-		static const std::string GetSelfPath();
+		// HANDLE 또는 path를 NULL 또는 빈 문자열로 넘기면 자기 자신을 대상으로 함.
+		static const std::string GetPath(const HANDLE param_file_handle = NULL);
 
 		static const HANDLE GetFileHandle(const std::string& file_path = "");
 
