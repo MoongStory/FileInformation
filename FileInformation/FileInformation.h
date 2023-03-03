@@ -43,19 +43,21 @@ namespace MOONG
 	private:
 
 	public:
-		// handle 값을 NULL을 넘기면 현재 프로세스의 핸들로 동작.
-		static const SYSTEMTIME GetCreationTime(const HANDLE handle = NULL);
-		static const std::string GetPath(const HANDLE handle = NULL);
-		static const std::string GetName(const HANDLE handle = NULL);
-		static const std::string GetNameWithoutFileExtension(const HANDLE handle = NULL);
+		// path를 NULL 또는 빈 문자열로 넘기면 자기 자신을 대상으로 함.
+		static const std::string GetSelfPath();
 
-		static const std::string GetFolderName(const HANDLE handle = NULL);
+		static const HANDLE GetFileHandle(const std::string& file_path = "");
 
-		// file_path를 빈 문자열을 넘기면 현재 프로세스의 버전을 얻음.
+		static const SYSTEMTIME GetCreationTime(const std::string& file_path = "");
+
+		static const std::string GetName(std::string file_path = "");
+		static const std::string GetNameWithoutFileExtension(std::string file_path = "");
+
+		static const std::string GetFolderName(std::string file_path = "");
+
 		static const std::string GetVersion(const std::string param_file_path = "");
 
-		static const HANDLE GetHandle(const std::string file_name = "");
-		static const long GetSize(const std::string file_path = "");
+		static const LONGLONG GetSize(const std::string file_path = "");
 	protected:
 	private:
 	};
