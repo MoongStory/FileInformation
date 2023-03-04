@@ -46,6 +46,7 @@ namespace MOONG
 		// HANDLE 또는 path를 NULL 또는 빈 문자열로 넘기면 자기 자신을 대상으로 함.
 
 		// https ://learn.microsoft.com/ko-kr/windows/win32/memory/obtaining-a-file-name-from-a-file-handle
+		// 파라미터로 받은 file_handle을 함수 내부에서 CloseHandle 함.
 		static const std::string get_path(const HANDLE param_file_handle = NULL);
 
 		static const HANDLE get_file_handle(const std::string& file_path = "");
