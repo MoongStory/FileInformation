@@ -48,6 +48,10 @@ const std::string MOONG::FileInformation::get_path(const HANDLE param_file_handl
 		char self_path[MAX_PATH] = { 0 };
 		GetModuleFileNameA(NULL, self_path, sizeof(self_path));
 		file_handle = CreateFileA(self_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (file_handle == INVALID_HANDLE_VALUE)
+		{
+			return std::string("open fail[") + std::string(self_path) + std::string("]");
+		}
 	}
 	else
 	{
@@ -72,6 +76,8 @@ const std::string MOONG::FileInformation::get_path(const HANDLE param_file_handl
 		0,
 		1,
 		NULL);
+
+	CloseHandle(file_handle);
 
 	if (hFileMap)
 	{
