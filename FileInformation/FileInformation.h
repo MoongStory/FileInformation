@@ -49,12 +49,12 @@ namespace MOONG
 		// 파라미터로 받은 file_handle을 함수 내부에서 CloseHandle 함.
 		static const std::string get_path(const HANDLE param_file_handle = NULL);
 
-		static const HANDLE get_file_handle(const std::string& file_path = "");
+		static const HANDLE get_file_handle(const std::string file_path = "");
 
-		static const SYSTEMTIME get_creation_time(const std::string& file_path = "");
+		static const SYSTEMTIME get_creation_time(const std::string file_path = "");
 
-		static const std::string get_directory(const std::string file_path = "");
-		static const std::string get_extension(const std::string file_path = "");
+		static const std::string get_directory(std::string file_path = "");
+		static const std::string get_extension(std::string file_path = "");
 		static const std::string get_name(const std::string file_path = "");
 		static const std::string get_name_without_extension(const std::string file_path = "");
 
