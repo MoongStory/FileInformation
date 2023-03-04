@@ -66,9 +66,17 @@ int main()
 	//std::cout << std::endl;
 	//std::cout << std::endl;
 
-	std::cout << "is_exist[" << MOONG::FileInformation::is_exist("df") << "]\n" << std::endl;
-	std::cout << "is_exist[" << MOONG::FileInformation::is_exist("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe") << "]\n" << std::endl;
-	std::cout << "is_exist[" << MOONG::FileInformation::is_exist("C:/Program Files/Google/Chrome/Application/chrome.exe") << "]\n" << std::endl;
+	//std::cout << "is_exist[" << MOONG::FileInformation::is_exist() << "]\n" << std::endl;
+	//std::cout << "is_exist[" << MOONG::FileInformation::is_exist("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe") << "]\n" << std::endl;
+	//std::cout << "is_exist[" << MOONG::FileInformation::is_exist("C:/Program Files/Google/Chrome/Application/chrome.exe") << "]\n" << std::endl;
+
+	//std::cout << std::endl;
+	//std::cout << std::endl;
+	//std::cout << std::endl;
+
+	std::cout << "get_file_extension[" << MOONG::FileInformation::get_file_extension() << "]\n" << std::endl;
+	std::cout << "get_file_extension[" << MOONG::FileInformation::get_file_extension("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe") << "]\n" << std::endl;
+	std::cout << "get_file_extension[" << MOONG::FileInformation::get_file_extension("C:/Program Files/Google/Chrome/Application/chrome.exe") << "]\n" << std::endl;
 
 	std::cout << std::endl;
 	std::cout << std::endl;

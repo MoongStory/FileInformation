@@ -29,6 +29,8 @@ const SYSTEMTIME MOONG::FileInformation::get_creation_time(const std::string& fi
 	FILETIME last_write_time = { 0 };
 	
 	GetFileTime(process_handle, &creation_time, &last_access_time, &last_write_time);
+
+	CloseHandle(process_handle);
 	
 	SYSTEMTIME system_time = { 0 };
 	FileTimeToSystemTime(&creation_time, &system_time);
@@ -142,19 +144,29 @@ const std::string MOONG::FileInformation::get_path(const HANDLE param_file_handl
 	return output;
 }
 
-const std::string MOONG::FileInformation::get_name(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_file_extension(std::string file_path/* = ""*/)
 {
-	return MOONG::StringTool::pop_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path, "\\/");
+	return MOONG::StringTool::cut_left_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path, '.');
 }
 
-const std::string MOONG::FileInformation::get_name_without_file_extension(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_file_name(const std::string file_path/* = ""*/)
 {
-	std::string file_name = MOONG::FileInformation::get_name(file_path);
+	if (file_path.length() <= 0)
+	{
+		return MOONG::FileInformation::get_path();
+	}
+
+	return MOONG::StringTool::pop_right_keep_origin(file_path, "\\/");
+}
+
+const std::string MOONG::FileInformation::get_file_name_without_file_extension(const std::string file_path/* = ""*/)
+{
+	std::string file_name = MOONG::FileInformation::get_file_name(file_path);
 
 	return MOONG::StringTool::cut_right(file_name, ".");
 }
 
-const std::string MOONG::FileInformation::get_folder_name(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_folder_name(const std::string file_path/* = ""*/)
 {
 	std::string folder_name = file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path;
 
@@ -226,7 +238,11 @@ const LONGLONG MOONG::FileInformation::get_size(const std::string file_path/* = 
 {
 	LARGE_INTEGER file_size = {0};
 
-	GetFileSizeEx(MOONG::FileInformation::get_file_handle(file_path), &file_size);
+	HANDLE file_handle = MOONG::FileInformation::get_file_handle(file_path);
+
+	GetFileSizeEx(file_handle, &file_size);
+
+	CloseHandle(file_handle);
 
 	return file_size.QuadPart;
 }
