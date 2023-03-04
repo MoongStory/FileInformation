@@ -77,6 +77,7 @@ const std::string MOONG::FileInformation::get_path(const HANDLE param_file_handl
 		1,
 		NULL);
 
+	// param_file_handle이 NULL일때만 CloseHandle 해야되나...?
 	CloseHandle(file_handle);
 
 	if (hFileMap)
