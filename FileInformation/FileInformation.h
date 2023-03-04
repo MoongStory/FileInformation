@@ -56,7 +56,7 @@ namespace MOONG
 		static const std::string get_directory(const std::string file_path = "");
 		static const std::string get_extension(const std::string file_path = "");
 		static const std::string get_name(const std::string file_path = "");
-		static const std::string get_name_without_file_extension(const std::string file_path = "");
+		static const std::string get_name_without_extension(const std::string file_path = "");
 
 		static const std::string get_folder_name(const std::string file_path = "");
 
