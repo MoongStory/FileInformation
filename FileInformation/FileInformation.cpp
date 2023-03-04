@@ -144,12 +144,17 @@ const std::string MOONG::FileInformation::get_path(const HANDLE param_file_handl
 	return output;
 }
 
-const std::string MOONG::FileInformation::get_file_extension(std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_directory(const std::string file_path/* = ""*/)
+{
+	return MOONG::StringTool::cut_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path, "\\/");
+}
+
+const std::string MOONG::FileInformation::get_extension(std::string file_path/* = ""*/)
 {
 	return MOONG::StringTool::cut_left_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path, '.');
 }
 
-const std::string MOONG::FileInformation::get_file_name(const std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_name(const std::string file_path/* = ""*/)
 {
 	if (file_path.length() <= 0)
 	{
@@ -159,9 +164,9 @@ const std::string MOONG::FileInformation::get_file_name(const std::string file_p
 	return MOONG::StringTool::pop_right_keep_origin(file_path, "\\/");
 }
 
-const std::string MOONG::FileInformation::get_file_name_without_file_extension(const std::string file_path/* = ""*/)
+const std::string MOONG::FileInformation::get_name_without_file_extension(const std::string file_path/* = ""*/)
 {
-	std::string file_name = MOONG::FileInformation::get_file_name(file_path);
+	std::string file_name = MOONG::FileInformation::get_name(file_path);
 
 	return MOONG::StringTool::cut_right(file_name, ".");
 }

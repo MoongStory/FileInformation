@@ -53,9 +53,10 @@ namespace MOONG
 
 		static const SYSTEMTIME get_creation_time(const std::string& file_path = "");
 
-		static const std::string get_file_extension(const std::string file_path = "");
-		static const std::string get_file_name(const std::string file_path = "");
-		static const std::string get_file_name_without_file_extension(const std::string file_path = "");
+		static const std::string get_directory(const std::string file_path = "");
+		static const std::string get_extension(const std::string file_path = "");
+		static const std::string get_name(const std::string file_path = "");
+		static const std::string get_name_without_file_extension(const std::string file_path = "");
 
 		static const std::string get_folder_name(const std::string file_path = "");
 
