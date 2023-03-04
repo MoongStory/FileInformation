@@ -163,12 +163,7 @@ const std::string MOONG::FileInformation::get_extension(const std::string file_p
 
 const std::string MOONG::FileInformation::get_name(const std::string file_path/* = ""*/)
 {
-	if (file_path.length() <= 0)
-	{
-		return MOONG::FileInformation::get_path();
-	}
-
-	return MOONG::StringTool::pop_right_keep_origin(file_path, "\\/");
+	return MOONG::StringTool::pop_right_keep_origin(file_path.length() <= 0 ? MOONG::FileInformation::get_path() : file_path, "\\/");
 }
 
 const std::string MOONG::FileInformation::get_name_without_extension(const std::string file_path/* = ""*/)

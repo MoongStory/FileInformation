@@ -26,9 +26,11 @@ int main()
 	//std::cout << std::endl;
 	//std::cout << std::endl;
 
-	//std::cout << "get_name[" << MOONG::FileInformation::get_name().c_str() << "]\n" << std::endl;
-	//std::cout << "get_name[" << MOONG::FileInformation::get_name("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe").c_str() << "]\n" << std::endl;
-	//std::cout << "get_name[" << MOONG::FileInformation::get_name("C:/Program Files/Google/Chrome/Application/chrome.exe").c_str() << "]\n" << std::endl;
+	std::cout << "get_name[" << MOONG::FileInformation::get_name().c_str() << "]\n" << std::endl;
+	std::cout << "get_name[" << MOONG::FileInformation::get_name("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe").c_str() << "]\n" << std::endl;
+	std::cout << "get_name[" << MOONG::FileInformation::get_name("C:/Program Files/Google/Chrome/Application/chrome.exe").c_str() << "]\n" << std::endl;
+	std::cout << "get_name[" << MOONG::FileInformation::get_name("./Chrome/Application/chrome.exe").c_str() << "]\n" << std::endl;
+	std::cout << "get_name[" << MOONG::FileInformation::get_name("./Chrome/Application/LICENSE").c_str() << "]\n" << std::endl;
 
 	//std::cout << std::endl;
 	//std::cout << std::endl;
@@ -82,13 +84,13 @@ int main()
 	//std::cout << std::endl;
 	//std::cout << std::endl;
 
-	std::cout << "get_directory[" << MOONG::FileInformation::get_directory() << "]\n" << std::endl;
-	std::cout << "get_directory[" << MOONG::FileInformation::get_directory("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe") << "]\n" << std::endl;
-	std::cout << "get_directory[" << MOONG::FileInformation::get_directory("C:/Program Files/Google/Chrome/Application/chrome.exe") << "]\n" << std::endl;
+	//std::cout << "get_directory[" << MOONG::FileInformation::get_directory() << "]\n" << std::endl;
+	//std::cout << "get_directory[" << MOONG::FileInformation::get_directory("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe") << "]\n" << std::endl;
+	//std::cout << "get_directory[" << MOONG::FileInformation::get_directory("C:/Program Files/Google/Chrome/Application/chrome.exe") << "]\n" << std::endl;
 
-	std::cout << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
+	//std::cout << std::endl;
+	//std::cout << std::endl;
+	//std::cout << std::endl;
 
 	system("pause");
 
