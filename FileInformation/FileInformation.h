@@ -61,6 +61,8 @@ namespace MOONG
 		static const std::string get_version(const std::string param_file_path = "");
 
 		static const LONGLONG get_size(const std::string file_path = "");
+
+		static const bool is_exist(const std::string file_path);
 	protected:
 	private:
 	};

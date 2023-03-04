@@ -230,3 +230,16 @@ const LONGLONG MOONG::FileInformation::get_size(const std::string file_path/* = 
 
 	return file_size.QuadPart;
 }
+
+const bool MOONG::FileInformation::is_exist(const std::string file_path)
+{
+	HANDLE handle = CreateFileA(file_path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (INVALID_HANDLE_VALUE == handle)
+	{
+		return false;
+	}
+
+	CloseHandle(handle);
+
+	return true;
+}
