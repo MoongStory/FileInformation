@@ -15,7 +15,7 @@
 #include <strsafe.h>
 
 #ifndef _countof
-	#define _countof(array) ((sizeof(arrry)) / (sizeof(array[0])))
+	#define _countof(array) (sizeof(array)/sizeof(array[0]))
 #endif
 
 const SYSTEMTIME MOONG::FileInformation::get_creation_time(const std::string file_path/* = ""*/)
